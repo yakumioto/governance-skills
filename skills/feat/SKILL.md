@@ -129,3 +129,22 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
 - 找不到项目模板、插件模板、全局模板目录中的`templates/tasks.md`：停止并报告错误（不得生成文档）
 - 找不到 design：停止并报告错误（不得生成 feature/tasks）
 - 冲突检查发现“重复实现/强冲突”：仍可生成文档，但必须在 Feature 的 `Risks` 或 `Notes` 中列出冲突点，并在 Tasks 中加入首个 Task 用于“对齐/清理/确认”。
+
+---
+
+## Execute（手动执行）
+
+本次 `feat` 只生成规格与任务清单，不会执行任何代码变更。
+
+### 1) 选择要执行的 Task
+打开本次生成的 Tasks 文件：
+- `docs/task/YYYY-MM-DD-HH-MM-<feat-name>.md`
+
+从中挑选一个 `Task ID`（建议从 1 开始，按顺序推进）。
+
+### 2) 调用 Execute 技能执行该 Task
+在 ClaudeCode 中运行：
+
+```bash
+/execute docs/task/YYYY-MM-DD-HH-MM-<feat-name>.md:<task-id>
+```

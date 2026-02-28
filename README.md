@@ -36,19 +36,21 @@ fix（修复）可独立创建修复任务
 
 ### Claude Code 安装
 
-在 Claude Code 中运行：
+在 Claude Code 中注册 Marketplace
 
 ```bash
-/plugin add https://github.com/yakumioto/governance-skills.git
+/plugin marketplace add yakumioto/governance-skills
 ```
+
+在 Marketplace 中安装 governance-skills 插件
+
+```bash
+/plugin marketplace install governance-skills@governance-skills
+```
+
+
 
 ### 验证安装
-
-安装完成后，检查技能是否可用：
-
-```bash
-/ls skills
-```
 
 应能看到以下技能：
 - `design` — 生成全局设计文档
@@ -63,7 +65,7 @@ fix（修复）可独立创建修复任务
 ### 1. 创建设计文档
 
 ```bash
-/design
+/design <项目需求>
 ```
 
 生成项目级设计文档，定义 Goals、Constraints、Acceptance Criteria 等。
