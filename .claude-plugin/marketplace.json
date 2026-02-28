@@ -16,7 +16,7 @@
         "url": "https://github.com/yakumioto/governance-skills.git"
       },
       "description": "Governance skills library for AI coding agents: design baselines, task planning, controlled execution, and auditable workflows",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "strict": true
     }
   ]

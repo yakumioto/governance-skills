@@ -1,6 +1,7 @@
 # 任务清单（Tasks）：{{title}}
 
 **创建时间（Created）：** {{datetime}}
+**类型（Type）：** {{task_type}}（feat / fix / refactor / doc / test / chore）
 
 **关联文档（Traceability）：**
 - 设计文档（Design）：
@@ -12,6 +13,11 @@
 - 其他参考（Docs / ADR / RFC / Tickets）：
   - {{other_ref_1}}
   - {{other_ref_2}}
+
+---
+
+## 任务摘要（Summary）
+{{task_summary}}
 
 ---
 
