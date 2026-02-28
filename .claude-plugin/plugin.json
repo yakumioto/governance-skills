@@ -1,0 +1,21 @@
+{
+  "name": "governance-skills",
+  "description": "Governance skills library for AI coding agents: design baselines, task planning, controlled execution, and auditable workflows",
+  "version": "0.1.0",
+  "author": {
+    "name": "yakumioto"
+  },
+  "homepage": "https://github.com/yakumioto/governance-skills",
+  "repository": "https://github.com/yakumioto/governance-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "governance",
+    "workflow",
+    "design",
+    "planning",
+    "execution",
+    "auditing",
+    "agents"
+  ]
+}
