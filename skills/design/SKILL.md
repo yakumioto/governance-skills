@@ -40,12 +40,9 @@ description: 使用 brainstorming 生成全局设计文档（Design Baseline）
 
 ### 3) Brainstorming（强制收敛）
 **能力检查（Capabilities Check）：**
-- 若执行需要具备命令运行/文件变更能力，先确认运行环境已启用所需能力（如：Superpowers）。
-- 若未启用/不可用：必须停止执行变更，仍需生成 execute 文档：
-  - Result=FAIL
-  - Failure Reason：缺少执行能力（Superpowers 未安装/未启用）
-  - Next Actions：提示用户安装/启用 Superpowers 后重试
-  
+- 检查是否已启用 `/superpowers:brainstorm` 能力
+- 如果未启用：
+  - 提示用户安装/启用 Superpowers 插件并停止执行
 ```
 请调用 /superpowers:brainstorm <需求描述>
 ```
