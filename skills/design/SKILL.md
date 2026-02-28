@@ -9,6 +9,20 @@ description: 使用 brainstorming 生成全局设计文档（Design Baseline）
 
 ---
 
+## 强制限制（Hard Gate）
+
+- 仅允许生成 `docs/*-design.md`
+- 仅允许调用 `/superpowers:brainstorm` 命令
+- 禁止生成其他任何文件
+- 禁止输出实现代码、patch、diff、PR、git 命令
+- 禁止描述函数级或行级修改步骤
+- 禁止运行会改变工作区的命令
+
+如检测到任何实现性内容（代码/patch/修改步骤），立即停止并报告：
+“Design Skill 违规：检测到实现行为”
+
+---
+
 ## 允许操作范围（Hard Scope）
 - **允许读取：**
   - `docs/*-design.md`

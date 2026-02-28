@@ -89,7 +89,7 @@ fix（修复）可独立创建修复任务
 ### 4. 执行任务
 
 ```bash
-/execute docs/task/YYYY-MM-DD-HH-MM-<name>.md:<task-id>
+/execute docs/tasks/YYYY-MM-DD-HH-MM-<name>.md:<task-id>
 ```
 
 执行指定任务并记录可审计的执行证据。

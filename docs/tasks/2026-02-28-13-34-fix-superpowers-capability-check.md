@@ -24,7 +24,7 @@
 
 | Task ID | 状态 | 优先级 | 摘要 | 关联（Refs） | 依赖 | 完成时间 | 证据 |
 |---------|------|--------|------|--------------|------|----------|------|
-| 1 | completed | P0 | 简化能力检查逻辑并更新版本号 | Design:2026-02-28-12-51-design.md [D1][AC5] | - | 2026-02-28-13-37 | docs/execute/2026-02-28-13-37-fix-superpowers-capability-check-1.md |
+| 1 | completed | P0 | 简化能力检查逻辑并更新版本号 | Design:2026-02-28-12-51-design.md [D1][AC5] | - | 2026-02-28-13-37 | docs/executes/2026-02-28-13-37-fix-superpowers-capability-check-1.md |
 
 > 优先级（Priority）：P0 必做 / P1 应做 / P2 可选
 > Refs 示例：`Feature:xxx [FR1][AC2]`，`Design:yyy [D3][AC1]`

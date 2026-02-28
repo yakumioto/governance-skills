@@ -9,12 +9,26 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
 
 ---
 
+## 强制限制（Hard Gate）
+
+- 仅允许生成 `docs/features/*.md` `docs/tasks/*.md`
+- 仅允许调用 `/superpowers:brainstorm` 命令
+- 禁止生成其他任何文件
+- 禁止输出实现代码、patch、diff、PR、git 命令
+- 禁止描述函数级或行级修改步骤
+- 禁止运行会改变工作区的命令
+
+如检测到任何实现性内容（代码/patch/修改步骤），立即停止并报告：
+“Feat Skill 违规：检测到实现行为”
+
+---
+
 ## 允许操作范围（Hard Scope）
 - **允许读取：**
   - `docs/*-design.md`（最新一份）
-  - `docs/feat/*.md`（只读，用于定位相关需求/接口/约束）
-  - `docs/task/*.md`（只读，用于避免重复修复与识别阻塞）
-  - `docs/execute/*.md`（只读，用于冲突检查与回归点识别）
+  - `docs/features/*.md`（只读，用于定位相关需求/接口/约束）
+  - `docs/tasks/*.md`（只读，用于避免重复修复与识别阻塞）
+  - `docs/executes/*.md`（只读，用于冲突检查与回归点识别）
   - `docs/templates/feature.md`                      # 优先：相对项目根目录
   - `../../templates/feature.md`                # 优先：仓库内模板（相对当前 SKILL.md）
   - `$HOME/.claude/skills/templates/feature.md` # 备用：全局模板目录（若 runner 支持 env 展开）
@@ -22,10 +36,10 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
   - `../../templates/tasks.md`                  # 优先：仓库内模板（相对当前 SKILL.md）
   - `$HOME/.claude/skills/templates/tasks.md`   # 备用：全局模板目录（若 runner 支持 env 展开）
 - **允许写入/修改：**
-  - 仅允许创建 `docs/feat/*.md` 与 `docs/task/*.md`
+  - 仅允许创建 `docs/features/*.md` 与 `docs/tasks/*.md`
 - **禁止修改：**
   - `docs/tasks/*.md`
-  - `docs/execute/*.md`
+  - `docs/executes/*.md`
   - `docs/*-design.md`
   - `docs/templates/*`                           # 项目模板文件只读
   - `../../templates/*`                 # 仓库内模板（相对当前 SKILL.md）
@@ -34,8 +48,8 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
 ---
 
 ## 文件命名（Naming）
-- Feature 输出：`docs/feat/YYYY-MM-DD-HH-MM-<feat-name>.md`
-- Tasks 输出：`docs/task/YYYY-MM-DD-HH-MM-<feat-name>.md`
+- Feature 输出：`docs/features/YYYY-MM-DD-HH-MM-<feat-name>.md`
+- Tasks 输出：`docs/tasks/YYYY-MM-DD-HH-MM-<feat-name>.md`
 - `<feat-name>` 规则：小写英文/数字/短横线（kebab-case），例如 `authz-audit-log`
 
 ---
@@ -54,8 +68,8 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
   2. 文档内 `关联设计（Design Links）` / `关联条目（Refs）` 包含相同的 `[G?]/[D?]/[AC?]`
   3. References 中引用了同一个 Design 版本
 - 读取范围：
-  - Feature：`docs/feat/*.md`
-  - Tasks：`docs/task/*.md`
+  - Feature：`docs/features/*.md`
+  - Tasks：`docs/tasks/*.md`
 - 读取用途：
   - 复用/延续编号体系（FR/NFR/AC/TC/IP 以及 Task ID/Refs）
   - 识别未完成/阻塞任务（pending/blocked）与原因
@@ -112,14 +126,14 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
     - 若 Implementation Plan 超过 7 步，必须拆成多个 Task
 - Tasks 的 References（最少包含）：
   - `Design: <latest design filename>`
-  - `Feature: docs/feat/<this-feat>.md`
+  - `Feature: docs/features/<this-feat>.md`
   - `Related Execute: ...`（如存在）
 
 ---
 
 ## 输出（Output）
-- 生成 Feature：`docs/feat/YYYY-MM-DD-HH-MM-<feat-name>.md`
-- 生成 Tasks：`docs/task/YYYY-MM-DD-HH-MM-<feat-name>.md`
+- 生成 Feature：`docs/features/YYYY-MM-DD-HH-MM-<feat-name>.md`
+- 生成 Tasks：`docs/tasks/YYYY-MM-DD-HH-MM-<feat-name>.md`
 
 ---
 
@@ -137,7 +151,7 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
 
 ### 1) 选择要执行的 Task
 打开本次生成的 Tasks 文件：
-- `docs/task/YYYY-MM-DD-HH-MM-<feat-name>.md`
+- `docs/tasks/YYYY-MM-DD-HH-MM-<feat-name>.md`
 
 从中挑选一个 `Task ID`（建议从 1 开始，按顺序推进）。
 
@@ -145,5 +159,5 @@ description: 读取最新 design + 相关 feat/tasks/execute → brainstorming �
 在 ClaudeCode 中运行：
 
 ```bash
-/execute docs/task/YYYY-MM-DD-HH-MM-<feat-name>.md:<task-id>
+/execute docs/tasks/YYYY-MM-DD-HH-MM-<feat-name>.md:<task-id>
 ```

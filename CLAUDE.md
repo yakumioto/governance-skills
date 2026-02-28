@@ -35,9 +35,9 @@ design → feat → tasks → execute
 | 技能 | 用途 | 输出文件 | 命名格式 |
 |------|------|----------|----------|
 | `design` | 生成全局设计文档 | `docs/*-design.md` | `YYYY-MM-DD-HH-MM-design.md` |
-| `feat` | 生成 Feature Spec + Tasks | `docs/feat/*.md` + `docs/task/*.md` | `YYYY-MM-DD-HH-MM-<feat-name>.md` |
-| `fix` | 生成修复 Tasks | `docs/task/*.md` | `YYYY-MM-DD-HH-MM-<fix-name>.md` |
-| `execute` | 执行 Task 并记录 | `docs/execute/*.md` | `YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md` |
+| `feat` | 生成 Feature Spec + Tasks | `docs/features/*.md` + `docs/tasks/*.md` | `YYYY-MM-DD-HH-MM-<feat-name>.md` |
+| `fix` | 生成修复 Tasks | `docs/tasks/*.md` | `YYYY-MM-DD-HH-MM-<fix-name>.md` |
+| `execute` | 执行 Task 并记录 | `docs/executes/*.md` | `YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md` |
 
 ### 模板系统（Templates System）
 

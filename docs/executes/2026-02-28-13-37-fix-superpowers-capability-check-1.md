@@ -1,7 +1,7 @@
 # 执行记录（Execute）：修复 Superpowers 未安装但还继续执行问题 - Task 1
 
 **创建时间（Created）：** 2026-02-28-13-37
-**任务来源（Task Source）：** docs/task/2026-02-28-13-34-fix-superpowers-capability-check.md
+**任务来源（Task Source）：** docs/tasks/2026-02-28-13-34-fix-superpowers-capability-check.md
 **状态（Status）：** PASS
 
 ---
@@ -14,7 +14,7 @@
 
 ## 1. References（参考资料）
 - **Design:** docs/2026-02-28-12-51-design.md
-- **Tasks:** docs/task/2026-02-28-13-34-fix-superpowers-capability-check.md
+- **Tasks:** docs/tasks/2026-02-28-13-34-fix-superpowers-capability-check.md
 - **Related Feat:** 无
 - **Related Execute:** 无
 

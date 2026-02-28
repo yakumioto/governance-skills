@@ -11,17 +11,17 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 
 ## 允许操作范围（Hard Scope）
 - **允许读取：**
-  - `docs/task/<task-file>.md`
+  - `docs/tasks/<task-file>.md`
   - `docs/*-design.md`（最新一份，仅用于引用补全）
-  - `docs/feat/*.md`（只读，用于引用与上下文理解，如 task refs 指向）
+  - `docs/features/*.md`（只读，用于引用与上下文理解，如 task refs 指向）
   - `templates/execute.md`                       # 优先：相对项目根目录
   - `../../templates/execute.md`                 # 优先：仓库内模板（相对当前 SKILL.md）
   - `$HOME/.claude/skills/templates/execute.md`  # 备用：全局模板目录（若 runner 支持 env 展开）
 - **允许写入/修改：**
-  - 仅允许创建或更新 `docs/execute/*.md`
+  - 仅允许创建或更新 `docs/executes/*.md`
 - **禁止修改：**
-  - `docs/task/*.md`
-  - `docs/feat/*.md`
+  - `docs/tasks/*.md`
+  - `docs/features/*.md`
   - `docs/*-design.md`
   - `docs/templates/*`                           # 项目模板文件只读
   - `../../templates/*`                 # 仓库内模板（相对当前 SKILL.md）
@@ -30,7 +30,7 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 ---
 
 ## 文件命名（Naming）
-- 输出：`docs/execute/YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md`
+- 输出：`docs/executes/YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md`
 - `<task-name>`：从 Task 标题（`## Task <id>: ...`）提取，转为 kebab-case（小写+短横线）
 
 ---
@@ -38,7 +38,7 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 ## 流程（Process）
 
 ### 1) 读取 Task 文档
-1. 打开 `docs/task/<task-file>.md`
+1. 打开 `docs/tasks/<task-file>.md`
 2. 读取 `Execution Timeline` 表，确认 `<task-id>` 存在
 3. 定位到对应段落：`## Task <task-id>: ...`
    - **只接受精确匹配** `## Task {{task-id}}:`，不得模糊匹配，避免错段落
@@ -75,7 +75,7 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 - **只能使用** `templates/execute.md`
 - References 必须包含（最少）：
   - `Design: <latest design filename>`
-  - `Tasks: docs/task/<task-file>.md`
+  - `Tasks: docs/tasks/<task-file>.md`
   - `Related Feat: ...`（若 task refs 指向）
   - `Related Execute: ...`（如本次涉及对齐历史冲突）
 - Result：
@@ -85,13 +85,13 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 ---
 
 ## 输出（Output）
-- 生成：`docs/execute/YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md`
+- 生成：`docs/executes/YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md`
 
 ---
 
 ## 失败处理（Failure Modes）
 - 找不到项目模板、插件模板、全局模板目录中的`templates/execute.md`：停止并报告错误
-- 找不到 `docs/task/<task-file>.md`：停止并报告错误
+- 找不到 `docs/tasks/<task-file>.md`：停止并报告错误
 - 找不到对应 `Task <task-id>` 段落：停止并报告错误
 - 发生 Scope 越界：必须 FAIL，且给出 rollback/next actions（不得继续扩改）
 
@@ -110,8 +110,8 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
   - `go.sum`
   - `docs/*-design.md`
   - `templates/**`
-  - `docs/feat/**`
-  - `docs/task/**`（execute 阶段禁止改 tasks 文档本身）
+  - `docs/features/**`
+  - `docs/tasks/**`（execute 阶段禁止改 tasks 文档本身）
 - Out of scope：
   - “任何新增公共 API”
   - “任何跨模块重构”

@@ -7,22 +7,37 @@ description: 读最新 design + 相关 feat/task/execute → brainstorming → �
 
 生成修复任务清单（Tasks），用于 Bug 修复/回归修复/小范围稳定性改进。**不生成** fix 设计文档；但必须保证与 Design/已有 Feature 的约束一致，并通过 execute 历史记录做冲突与重复修复检查。
 
+
+---
+
+## 强制限制（Hard Gate）
+
+- 仅允许生成 `docs/tasks/*.md`
+- 仅允许调用 `/superpowers:brainstorm` 命令
+- 禁止生成其他任何文件
+- 禁止输出实现代码、patch、diff、PR、git 命令
+- 禁止描述函数级或行级修改步骤
+- 禁止运行会改变工作区的命令
+
+如检测到任何实现性内容（代码/patch/修改步骤），立即停止并报告：
+“Fix Skill 违规：检测到实现行为”
+
 ---
 
 ## 允许操作范围（Hard Scope）
 - **允许读取：**
   - `docs/*-design.md`（最新一份）
-  - `docs/feat/*.md`（只读，用于定位相关需求/接口/约束）
-  - `docs/task/*.md`（只读，用于避免重复修复与识别阻塞）
-  - `docs/execute/*.md`（只读，用于冲突检查与回归点识别）
+  - `docs/features/*.md`（只读，用于定位相关需求/接口/约束）
+  - `docs/tasks/*.md`（只读，用于避免重复修复与识别阻塞）
+  - `docs/executes/*.md`（只读，用于冲突检查与回归点识别）
   - `templates/tasks.md`                       # 优先：相对项目根目录
   - `../../templates/tasks.md`                 # 优先：仓库内模板（相对当前 SKILL.md）
   - `$HOME/.claude/skills/templates/tasks.md`  # 备用：全局模板目录（若 runner 支持 env 展开）
 - **允许写入/修改：**
-  - 仅允许创建或更新 `docs/task/*.md`
+  - 仅允许创建或更新 `docs/tasks/*.md`
 - **禁止修改：**
-  - `docs/feat/*.md`
-  - `docs/execute/*.md`
+  - `docs/features/*.md`
+  - `docs/executes/*.md`
   - `docs/*-design.md`
   - `templates/*`                      # 项目模板文件只读
   - `../../templates/*`                # 仓库内模板（相对当前 SKILL.md）
@@ -31,7 +46,7 @@ description: 读最新 design + 相关 feat/task/execute → brainstorming → �
 ---
 
 ## 文件命名（Naming）
-- 输出：`docs/task/YYYY-MM-DD-HH-MM-<fix-name>.md`
+- 输出：`docs/tasks/YYYY-MM-DD-HH-MM-<fix-name>.md`
 - `<fix-name>` 规则：小写英文/数字/短横线（kebab-case），例如 `panic-on-empty-input`
 
 ---
@@ -108,7 +123,7 @@ description: 读最新 design + 相关 feat/task/execute → brainstorming → �
 ---
 
 ## 输出（Output）
-- 生成：`docs/task/YYYY-MM-DD-HH-MM-<fix-name>.md`
+- 生成：`docs/tasks/YYYY-MM-DD-HH-MM-<fix-name>.md`
 
 ---
 
@@ -123,7 +138,7 @@ description: 读最新 design + 相关 feat/task/execute → brainstorming → �
 
 ### 1) 选择要执行的 Task
 打开本次生成的 Tasks 文件：
-- `docs/task/YYYY-MM-DD-HH-MM-<fix-name>.md`
+- `docs/tasks/YYYY-MM-DD-HH-MM-<fix-name>.md`
 
 从中挑选一个 `Task ID`（建议从 1 开始，按顺序推进）。
 
@@ -131,5 +146,5 @@ description: 读最新 design + 相关 feat/task/execute → brainstorming → �
 在 ClaudeCode 中运行：
 
 ```bash
-/execute docs/task/YYYY-MM-DD-HH-MM-<fix-name>.md:<task-id>
+/execute docs/tasks/YYYY-MM-DD-HH-MM-<fix-name>.md:<task-id>
 ```
