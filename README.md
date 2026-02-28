@@ -45,7 +45,7 @@ fix（修复）可独立创建修复任务
 在 Marketplace 中安装 governance-skills 插件
 
 ```bash
-/plugin marketplace install governance-skills@governance-skills
+/plugin install governance-skills@yakumioto-marketplace
 ```
 
 
