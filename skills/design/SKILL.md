@@ -12,7 +12,7 @@ description: 使用 brainstorming 生成全局设计文档（Design Baseline）
 ## 强制限制（Hard Gate）
 
 - 仅允许生成 `docs/*-design.md`
-- 仅允许调用 `/superpowers:brainstorm` 命令
+- 仅允许调用 `/brainstorming` 命令
 - 禁止生成其他任何文件
 - 禁止输出实现代码、patch、diff、PR、git 命令
 - 禁止描述函数级或行级修改步骤
@@ -54,13 +54,13 @@ description: 使用 brainstorming 生成全局设计文档（Design Baseline）
 
 ### 3) Brainstorming（强制收敛）
 **能力检查（Capabilities Check）：**
-- 检查是否已启用 `/superpowers:brainstorm` 能力
+- 检查是否已启用 `/brainstorming` 能力
 - 如果未启用：
   - 提示用户安装/启用 Superpowers 插件并停止执行
 ```
-请调用 /superpowers:brainstorm <需求描述>
+请调用 /brainstorming <需求描述>
 ```
-等待 `/superpowers:brainstorm` 完成并获得需求摘要。
+等待 `/brainstorming` 完成并获得需求摘要。
 
 - 使用 brainstorming 进行发散，但输出必须**收敛到模板字段**：
   - `{{title}}`
