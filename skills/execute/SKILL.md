@@ -1,47 +1,60 @@
 ---
 name: execute
-description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可审计 execute 文档（含额外建议）
+description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可审计 execute 文档
 ---
 
-# Execute 技能
+# Execute — 任务执行与记录
 
-按指定 Task 执行变更，并记录可回放的执行证据（Commands/Assertions/Evidence），输出 execute 文档作为审计与回归依据。
+本 Skill 负责：
+- 读取 task 文档，按 task-id 执行 Scope 内变更
+- 生成可审计 execute 文档（包含 Commands/Assertions/Evidence）
+- 作为审计与回归依据
+
+<HARD-GATE>
+本 Skill 仅可手动触发。
+
+执行过程中：
+- 禁止超出 Task 定义的 Scope 进行变更
+- 禁止修改 Task 文档本身
+- 禁止生成 patch / diff / PR / git 命令
+</HARD-GATE>
+
+<HARD-SCOPE>
+允许读取：
+- `docs/*-design.md`              # 最新全局设计基线
+- `docs/features/*.md`            # 既有功能规格，只读
+- `docs/tasks/*.md`               # 既有任务文档，只读
+- `docs/executes/*.md`            # 既有执行记录，只读
+- `templates/feature.md`          # 插件 Feature 模板
+- `templates/tasks.md`            # 插件 Tasks 模板
+- `templates/execute.md`          # 插件 Execute 模板
+
+禁止修改：
+- `docs/*-design.md`              # 全局设计基线，只读
+- `docs/features/*.md`            # 既有功能规格，只读
+- `docs/tasks/*.md`               # 既有任务文档，只读
+
+允许写入：
+- `docs/executes/*.md`            # 执行记录，可追加
+</HARD-SCOPE>
 
 ---
 
-## 允许操作范围（Hard Scope）
-- **允许读取：**
-  - `docs/tasks/<task-file>.md`
-  - `docs/*-design.md`（最新一份，仅用于引用补全）
-  - `docs/features/*.md`（只读，用于引用与上下文理解，如 task refs 指向）
-  - `{project_root}/templates/execute.md`           # 优先：用户工作项目的 templates
-  - `{global_root}/templates/execute.md`           # 备用：全局模板目录 $HOME/.claude/skills/templates/
-  - `{plugin_root}/templates/execute.md`            # 备用：插件自带 templates
-- **允许写入/修改：**
-  - 仅允许创建或更新 `docs/executes/*.md`
-- **禁止修改：**
-  - `docs/tasks/*.md`
-  - `docs/features/*.md`
-  - `docs/*-design.md`
-  - `{project_root}/templates/*`       # 项目模板文件只读
-  - `{global_root}/templates/*`       # 全局模板目录只读
-  - `{plugin_root}/templates/*`       # 插件模板文件只读
+## 输入前提（Preconditions）
 
----
-
-## 文件命名（Naming）
-- 输出：`docs/executes/YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md`
-- `<task-name>`：从 Task 标题（`## Task <id>: ...`）提取，转为 kebab-case（小写+短横线）
+触发本 Skill 前，必须满足：
+- 已存在 `docs/tasks/<task-file>.md`
+- 知道要执行的 `<task-id>`
 
 ---
 
 ## 流程（Process）
 
 ### 1) 读取 Task 文档
-1. 打开 `docs/tasks/<task-file>.md`
-2. 读取 `Execution Timeline` 表，确认 `<task-id>` 存在
-3. 定位到对应段落：`## Task <task-id>: ...`
-   - **只接受精确匹配** `## Task {{task-id}}:`，不得模糊匹配，避免错段落
+- 打开 `docs/tasks/<task-file>.md`
+- 读取 `Execution Timeline` 表，确认 `<task-id>` 存在
+- 定位到对应段落：`## Task <task-id>: ...`
+  - **只接受精确匹配** `## Task {{task-id}}:`，不得模糊匹配，避免错段落
 
 ### 2) 提取执行约束与验收信息
 从该 Task 段落提取：
@@ -61,7 +74,7 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 - 变更必须最小化，仅为满足该 Task 的 Acceptance
 - 若发现必须额外改动才能修复：
   - 不得擅自扩 Scope
-  - 在 execute 的 Notes/Next Actions 中提出“需新增 Task”的建议
+  - 在 execute 的 Notes/Next Actions 中提出"需新增 Task"的建议
 
 ### 5) 运行验收（Acceptance Run）
 - 必须执行该 Task 的 Acceptance 命令（Commands）
@@ -87,10 +100,13 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 ## 输出（Output）
 - 生成：`docs/executes/YYYY-MM-DD-HH-MM-<task-name>-<task-id>.md`
 
+命名规则：
+- `<task-name>`：从 Task 标题（`## Task <id>: ...`）提取，转为 kebab-case（小写+短横线）
+
 ---
 
 ## 失败处理（Failure Modes）
-- 找不到项目模板、插件模板、全局模板目录中的`templates/execute.md`：停止并报告错误
+- 找不到 `templates/execute.md`：停止并报告错误
 - 找不到 `docs/tasks/<task-file>.md`：停止并报告错误
 - 找不到对应 `Task <task-id>` 段落：停止并报告错误
 - 发生 Scope 越界：必须 FAIL，且给出 rollback/next actions（不得继续扩改）
@@ -98,7 +114,8 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
 ---
 
 ## 额外建议（Strongly Recommended）
-> 为了让 Scope 检查更“机械化”、更不易越界，建议在 tasks 模板中把 Allowed/Forbidden 写成“目录/文件白名单与黑名单”。
+
+为了让 Scope 检查更"机械化"、更不易越界，建议在 tasks 模板中把 Allowed/Forbidden 写成"目录/文件白名单与黑名单"。
 
 示例（推荐写法）：
 - Allowed：
@@ -113,6 +130,6 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
   - `docs/features/**`
   - `docs/tasks/**`（execute 阶段禁止改 tasks 文档本身）
 - Out of scope：
-  - “任何新增公共 API”
-  - “任何跨模块重构”
-  - “任何数据迁移（除非明确写入 Allowed 与 Rollback）”
+  - "任何新增公共 API"
+  - "任何跨模块重构"
+  - "任何数据迁移（除非明确写入 Allowed 与 Rollback）"

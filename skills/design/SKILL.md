@@ -1,85 +1,71 @@
 ---
 name: design
-description: 使用 brainstorming 生成全局设计文档（Design Baseline）
+description: 在 discover 已完成路径判定后，生成全局设计文档（Design Baseline）
 ---
 
-# Design 技能
+# Design — 全局设计基线生成
 
-生成全局设计文档（Design Baseline），作为项目级“单一事实来源（Source of Truth）”，为后续 Feature/Tasks 提供约束与追溯依据。
+本 Skill 负责：
+- 承接 `discover` 已确认的 DESIGN 类需求
+- 生成新的全局设计文档（Design Baseline）
+- 作为后续 Feature / Tasks 的项目级单一事实来源（Source of Truth）
 
----
+<HARD-GATE>
+本 Skill 仅可在 `discover` 已输出 `NEXT_STATE: DESIGN` 后触发。
 
-## 强制限制（Hard Gate）
-
-- 仅允许生成 `docs/*-design.md`
-- 仅允许调用 `/brainstorming` 命令
-- 禁止生成其他任何文件
-- 禁止输出实现代码、patch、diff、PR、git 命令
+执行过程中：
+- 禁止重新进行需求分流
+- 禁止重复执行 discover 职责
+- 禁止生成实现代码
+- 禁止生成 patch / diff / PR / git 命令
 - 禁止描述函数级或行级修改步骤
+- 禁止生成除 `docs/*-design.md` 外的任何文件
 - 禁止运行会改变工作区的命令
+- 禁止调用其他技能
+</HARD-GATE>
 
-如检测到任何实现性内容（代码/patch/修改步骤），立即停止并报告：
-“Design Skill 违规：检测到实现行为”
+<HARD-SCOPE>
+允许读取：
+- `docs/*-design.md`              # 最新全局设计基线
+- `docs/features/*.md`            # 既有功能规格，只读
+- `docs/tasks/*.md`               # 既有任务文档，只读
+- `docs/executes/*.md`            # 既有执行记录，只读
+- `templates/design.md`           # 插件 Design 模板
+
+允许写入：
+- `docs/*-design.md`              # 项目设计文档
+</HARD-SCOPE>
 
 ---
 
-## 允许操作范围（Hard Scope）
-- **允许读取：**
-  - `docs/*-design.md`
-  - `{project_root}/templates/design.md`           # 优先：用户工作项目的 templates
-  - `{global_root}/templates/design.md`           # 备用：全局模板目录 $HOME/.claude/skills/templates/
-  - `{plugin_root}/templates/design.md`            # 备用：插件自带 templates
-- **允许写入/修改：**
-  - 仅允许创建 `docs/*-design.md`
-- **禁止修改：**
-  - 任何非 `docs/*-design.md`           #文件（包括但不限于治理文档、README、CLAUDE.md、AGENTS.md、SPEC.md、TASKS.md 等）
-  - `{project_root}/templates/*`       # 项目模板文件只读
-  - `{global_root}/templates/*`       # 全局模板目录只读
-  - `{plugin_root}/templates/*`       # 插件模板文件只读
+## 输入前提（Preconditions）
+
+触发本 Skill 前，必须满足：
+
+- 已完成 `discover`
+- `discover` 输出结果为：
+
+```text
+NEXT_STATE: DESIGN
+```
 
 ---
 
 ## 流程（Process）
 
-### 1) 发现现有 Design
-1. 查找 `docs/*-design.md`
-2. **若存在多个：以文件名中的时间戳排序，取最新一份**
-   - 约定文件名格式：`docs/YYYY-MM-DD-HH-MM-design.md`
-   - 最新判定：按 `YYYY-MM-DD-HH-MM` 进行字典序排序即可
+### 1) 汇总当前设计输入
+- discover 已确认的需求意图
+- 可读取的模板字段要求
 
-### 2) 读取最新 Design（如果存在）
-- 提取关键信息作为“现状输入”：
-  - 项目概述、Scope、Goals、Non-goals、Key Decisions、Constraints、Project-level AC、Risks、Open Questions、References
-- 记录“上一版引用”：`Previous Design: <filename>`
+### 2) 按模板生成文档
+- 必须且只能使用 `templates/design.md` 生成文档
+- 严格按模板章节输出
+- 不新增章节
+- 不改名章节
+- 不跳过关键字段
+- 语言以中文为主，关键术语可括注英文
 
-### 3) Brainstorming（强制收敛）
-**能力检查（Capabilities Check）：**
-- 检查是否已启用 `/brainstorming` 能力
-- 如果未启用：
-  - 提示用户安装/启用 Superpowers 插件并停止执行
-```
-请调用 /brainstorming <需求描述>
-```
-等待 `/brainstorming` 完成并获得需求摘要。
-
-- 使用 brainstorming 进行发散，但输出必须**收敛到模板字段**：
-  - `{{title}}`
-  - `{{datetime}}`
-  - `{{version}}`
-  - `{{overview}}`
-  - `{{architecture}}`
-  - `{{references}}`
-- brainstorming 产出必须回答：
-  - 本次设计相对上一版的**变化点（Delta）**
-  - 关键决策与权衡（Decision/Trade-offs）
-  - 项目级验收标准（Project-level AC）：3–7 条，Outcome/Metric/Measurement 三要素
-
-### 4) 汇总与成文（Template Fill）
-- **只能使用** `templates/design.md` 生成文档
-- 严格按模板章节输出，不新增/改名章节
-- 语言：中文为主，关键术语括注英文（如 In scope / Non-goals / Acceptance Criteria / SLO / Rollback）
-
-### 5) 写入新文档
+### 3) 写入新文档
 - 生成新文件：`docs/YYYY-MM-DD-HH-MM-design.md`
 - 在 References 中追加：
   - `Previous Design: docs/<last-design-filename>`（如存在）
@@ -88,11 +74,42 @@ description: 使用 brainstorming 生成全局设计文档（Design Baseline）
 
 ## 输出（Output）
 - 生成：`docs/YYYY-MM-DD-HH-MM-design.md`
-- 内容必须完全由项目模板文件或全局模板目录中的 `templates/design.md` 渲染得到（字段填充），不得直接自由发挥成文。
+
+要求：
+- 内容必须由模板 `templates/design.md` 渲染得到
+- 仅允许字段填充，不允许脱离模板自由发挥
+- 文档必须可作为后续 feat / task / execute 的上游依据
 
 ---
 
 ## 失败处理（Failure Modes）
-- 找不到项目模板、插件模板、全局模板目录中的`templates/design.md`：停止并报告错误（不得创建 design）
-- 无法读取 docs：停止并报告错误（不得创建 design）
-- 若信息不足以填充关键字段（title/overview/architecture）：允许在 overview/architecture 中写 “TBD”，并在 References 中记录“缺失信息清单”。
+- 找不到 `templates/design.md`：停止并报告错误（不得生成文档）
+- 找不到可引用的设计文档：仍可生成，但需说明"首次设计，无历史引用"
+
+---
+
+## 文档内容要求（Design Requirements）
+
+生成的 Design Baseline 至少应覆盖：
+
+- 本次设计的目标与背景
+- 项目级范围边界
+- 非目标（明确不做什么）
+- 核心架构或核心设计思路
+- 关键决策与权衡
+- 风险与约束
+- 项目级验收标准
+- 未决问题
+- 与上一版 design 的关系
+
+---
+
+## 终态（End State）
+
+终态不是实现，不是任务拆分，也不是继续追问。
+
+终态是：
+```text
+OUTPUT: docs/YYYY-MM-DD-HH-MM-design.md
+STATE: DESIGN_BASELINE_READY
+```
