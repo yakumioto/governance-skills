@@ -14,18 +14,18 @@ description: 读取 task 文档，按 task-id 执行 Scope 内变更，生成可
   - `docs/tasks/<task-file>.md`
   - `docs/*-design.md`（最新一份，仅用于引用补全）
   - `docs/features/*.md`（只读，用于引用与上下文理解，如 task refs 指向）
-  - `templates/execute.md`                       # 优先：相对项目根目录
-  - `../../templates/execute.md`                 # 优先：仓库内模板（相对当前 SKILL.md）
-  - `$HOME/.claude/skills/templates/execute.md`  # 备用：全局模板目录（若 runner 支持 env 展开）
+  - `{project_root}/templates/execute.md`           # 优先：用户工作项目的 templates
+  - `{global_root}/templates/execute.md`           # 备用：全局模板目录 $HOME/.claude/skills/templates/
+  - `{plugin_root}/templates/execute.md`            # 备用：插件自带 templates
 - **允许写入/修改：**
   - 仅允许创建或更新 `docs/executes/*.md`
 - **禁止修改：**
   - `docs/tasks/*.md`
   - `docs/features/*.md`
   - `docs/*-design.md`
-  - `docs/templates/*`                           # 项目模板文件只读
-  - `../../templates/*`                 # 仓库内模板（相对当前 SKILL.md）
-  - `$HOME/.claude/skills/templates/*`  # 备用：全局模板目录（若 runner 支持 env 展开）
+  - `{project_root}/templates/*`       # 项目模板文件只读
+  - `{global_root}/templates/*`       # 全局模板目录只读
+  - `{plugin_root}/templates/*`       # 插件模板文件只读
 
 ---
 

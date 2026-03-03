@@ -26,16 +26,16 @@ description: 使用 brainstorming 生成全局设计文档（Design Baseline）
 ## 允许操作范围（Hard Scope）
 - **允许读取：**
   - `docs/*-design.md`
-  - `docs/templates/design.md`                 # 优先：相对项目根目录
-  - `../../templates/design.md`                # 优先：仓库内模板（相对当前 SKILL.md）
-  - `$HOME/.claude/skills/templates/design.md` # 备用：全局模板目录（若 runner 支持 env 展开）
+  - `{project_root}/templates/design.md`           # 优先：用户工作项目的 templates
+  - `{global_root}/templates/design.md`           # 备用：全局模板目录 $HOME/.claude/skills/templates/
+  - `{plugin_root}/templates/design.md`            # 备用：插件自带 templates
 - **允许写入/修改：**
   - 仅允许创建 `docs/*-design.md`
 - **禁止修改：**
   - 任何非 `docs/*-design.md`           #文件（包括但不限于治理文档、README、CLAUDE.md、AGENTS.md、SPEC.md、TASKS.md 等）
-  - `docs/templates/*`                 # 项目模板文件只读
-  - `../../templates/design.md`        # 仓库内模板（相对当前 SKILL.md）
-  - `$HOME/.claude/skills/templates/*` # 全局模板目录只读
+  - `{project_root}/templates/*`       # 项目模板文件只读
+  - `{global_root}/templates/*`       # 全局模板目录只读
+  - `{plugin_root}/templates/*`       # 插件模板文件只读
 
 ---
 
