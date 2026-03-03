@@ -13,11 +13,13 @@ design → feat → tasks → execute
    ↓       ↓       ↓        ↓
 全局设计 → 功能规格 → 任务清单 → 执行记录
 
+discover（需求识别）← 入口
 fix（修复）可独立创建修复任务
 ```
 
 ### 核心能力
 
+- **Discover** — 需求识别与路径判定，澄清意图并决定流程方向
 - **Design Baseline** — 生成项目级设计文档，作为单一事实来源
 - **Feature Specification** — 将需求拆解为功能规格和可执行任务
 - **Fix Workflow** — Bug 修复闭环：复现 → 修复 → 回归
@@ -25,7 +27,7 @@ fix（修复）可独立创建修复任务
 
 ### 治理机制
 
-- **编号与引用体系** — 跨文档的可追溯引用
+- **编号与引用体系** — 跨文档的可追溯引用（G/NG/D/AC/R/Q；FR/NFR/TC/IP/DEP）
 - **冲突检测** — 自动检查历史执行记录，避免重复实现与回归
 - **Scope 控制** — 明确的允许/禁止范围，防止范围蔓延
 - **验收标准三要素** — Outcome / Metric-Threshold / Measurement
@@ -48,11 +50,10 @@ fix（修复）可独立创建修复任务
 /plugin install governance-skills@yakumioto-marketplace
 ```
 
-
-
 ### 验证安装
 
-应能看到以下技能：
+应能看到以下 5 个技能：
+- `discover` — 需求识别与路径判定
 - `design` — 生成全局设计文档
 - `feat` — 功能开发流程
 - `fix` — 小变更/修复
@@ -61,6 +62,14 @@ fix（修复）可独立创建修复任务
 ---
 
 ## 使用方法
+
+### 0. 需求识别
+
+```bash
+/discover <需求描述>
+```
+
+分析需求意图，判定进入 DESIGN / FEAT / FIX 流程。
 
 ### 1. 创建设计文档
 
@@ -101,15 +110,23 @@ fix（修复）可独立创建修复任务
 ```
 governance-skills/
 ├── skills/              # 技能定义
-│   ├── design/         # 设计技能
-│   ├── feat/           # 功能技能
-│   ├── fix/            # 修复技能
-│   └── execute/        # 执行技能
+│   ├── discover/       # 需求识别技能
+│   ├── design/        # 设计技能
+│   ├── feat/          # 功能技能
+│   ├── fix/           # 修复技能
+│   └── execute/       # 执行技能
 ├── templates/          # 文档模板（只读）
 │   ├── design.md
 │   ├── feature.md
 │   ├── tasks.md
 │   └── execute.md
+├── docs/               # 治理文档
+│   ├── <timestamp>-design.md      # 设计文档
+│   ├── features/                    # 功能文档
+│   ├── tasks/                       # 任务清单
+│   └── executes/                     # 执行记录
+├── CLAUDE.md           # 项目指令
+├── README.md           # 本文件
 └── .claude-plugin/     # 插件元数据
     ├── plugin.json
     └── marketplace.json
