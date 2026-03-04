@@ -19,7 +19,7 @@ fix（修复）可独立创建修复任务
 
 ### 核心能力
 
-- **Discover** — 需求识别与路径判定，澄清意图并决定流程方向
+- **Discover** — 需求识别与路径判定，支持 4 种场景：DIRECT（直接回答）/ DESIGN（新能力）/ FEAT（功能增强）/ FIX（错误修复）
 - **Design Baseline** — 生成项目级设计文档，作为单一事实来源
 - **Feature Specification** — 将需求拆解为功能规格和可执行任务
 - **Fix Workflow** — Bug 修复闭环：复现 → 修复 → 回归
@@ -69,7 +69,14 @@ fix（修复）可独立创建修复任务
 /discover <需求描述>
 ```
 
-分析需求意图，判定进入 DESIGN / FEAT / FIX 流程。
+分析需求意图，判定进入 DIRECT / DESIGN / FEAT / FIX 流程：
+
+| 场景 | 说明 |
+|------|------|
+| DIRECT | 用户意图是了解现状，直接回答问题 |
+| DESIGN | 新增能力，需要先做全局设计 |
+| FEAT | 现有能力增强 |
+| FIX | 错误修复 |
 
 ### 1. 创建设计文档
 
@@ -158,3 +165,11 @@ MIT License
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
+
+---
+
+## 更新日志
+
+### v0.3.1
+
+- **Discover 扩展**：支持 4 种场景（DIRECT / DESIGN / FEAT / FIX），新增"了解现状"场景用于直接回答代码问题
